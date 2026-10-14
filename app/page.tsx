@@ -30,12 +30,26 @@ export default async function Home() {
           </h2>
           <div className="about-body">
             <p>
-              안녕하세요, 저는 ○○○입니다. 여기에 자기소개 첫 번째 문단을
-              적으세요.
+              안녕하세요, 저는 배종현입니다. 제가 수업시간에 진행한 프로젝트
+              링크입니다.
             </p>
             <p>
-              두 번째 문단을 적으세요. 문단을 늘리려면 이 줄을 복사해서 추가하면
-              됩니다.
+              <a
+                href="https://github.com/bjh4280/my-app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub 저장소
+              </a>
+            </p>
+            <p>
+              <a
+                href="https://vercel.com/signo6/my-app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                배포된 사이트 (Vercel)
+              </a>
             </p>
           </div>
         </div>
