@@ -1,0 +1,55 @@
+{
+  "profile": {
+    "name": "배종현",
+    "role": "중부대학교",
+    "tagline": "사용자가 헤매지 않는 화면을 만듭니다.",
+    "location": "서울",
+    "available": true,
+    "email": "bjh4280@gmail.com",
+    "about": [
+      "웹 서비스의 화면과 데이터가 만나는 지점을 주로 다룹니다. 디자인을 코드로 옮기는 일부터 API 설계, 배포까지 혼자서도 끝까지 가져가는 편입니다.",
+      "빠르게 만드는 것보다 오래 고쳐 쓸 수 있게 만드는 쪽을 택합니다. 이 소개와 아래 프로젝트는 모두 MongoDB에 저장된 내용이니, 본인 정보로 바꿔 넣어 사용하세요."
+    ],
+    "skills": [
+      {
+        "category": "프론트엔드",
+        "items": ["TypeScript", "React", "Next.js", "CSS"]
+      },
+      { "category": "백엔드", "items": ["Node.js", "MongoDB", "REST API"] },
+      { "category": "도구", "items": ["Git", "VS Code", "Vercel", "Docker"] }
+    ],
+    "links": [
+      { "label": "GitHub", "url": "https://github.com/bjh4280/my-app" },
+      { "label": "Vercel", "url": "https://vercel.com/signo6/my-app" }
+    ]
+  },
+  "projects": [
+    {
+      "title": "동네 장터",
+      "year": 2026,
+      "summary": "이웃끼리 중고 물품을 거래하는 지역 기반 마켓",
+      "description": "위치 기반 검색과 실시간 채팅을 갖춘 거래 플랫폼입니다. 목록 조회 속도를 개선하기 위해 MongoDB 지리 공간 인덱스를 적용했습니다.",
+      "stack": ["Next.js", "MongoDB", "WebSocket"],
+      "url": "https://example.com",
+      "repo": "https://github.com/",
+      "order": 1
+    },
+    {
+      "title": "습관 기록장",
+      "year": 2025,
+      "summary": "하루 한 줄로 습관을 기록하고 흐름을 보는 앱",
+      "description": "입력 단계를 최소화한 기록 화면과 주간 통계를 제공합니다. 오프라인에서도 기록할 수 있도록 로컬 저장 후 동기화하는 구조로 만들었습니다.",
+      "stack": ["React", "TypeScript", "IndexedDB"],
+      "repo": "https://github.com/",
+      "order": 2
+    },
+    {
+      "title": "팀 회의록 정리기",
+      "year": 2024,
+      "summary": "회의 메모에서 할 일만 골라 정리하는 도구",
+      "description": "붙여넣은 회의 메모에서 담당자와 기한이 적힌 항목을 추려 목록으로 만들어 줍니다. 사내 팀 열 곳이 사용했습니다.",
+      "stack": ["Node.js", "Express", "MongoDB"],
+      "order": 3
+    }
+  ]
+}
