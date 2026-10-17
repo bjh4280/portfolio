@@ -10,6 +10,11 @@ export default async function Home() {
   return (
     <main>
       <header className="hero wrap">
+        <img
+          src="/school-logo.svg"
+          alt="중부대학교 로고"
+          className="hero-photo"
+        />
         <h1 className="hero-name">{profile.name}</h1>
         <p className="hero-role">{profile.role}</p>
         <p className="hero-tagline">{profile.tagline}</p>
@@ -17,7 +22,7 @@ export default async function Home() {
           <span>{profile.location}</span>
           <span className="status" data-open={profile.available}>
             {profile.available
-              ? "새 프로젝트를 받고 있습니다"
+              ? "웹 서버 보안프로그래밍 과제"
               : "지금은 일정이 가득 찼습니다"}
           </span>
         </div>
@@ -30,9 +35,15 @@ export default async function Home() {
           </h2>
           <div className="about-body">
             <p>
-              안녕하세요, 저는 배종현입니다. 제가 수업시간에 진행한 프로젝트
-              링크입니다.
+              안녕하세요, 저는 배종현입니다. 웹 서버보안 프로그래밍 수업을
+              듣고있습니다.
             </p>
+            <p>
+              이 사이트는 수업 과제로 만든 개인 포트폴리오입니다. Next.js로
+              화면을 만들고 MongoDB에 방문자 문의를 저장하는 기능을 직접 구현해
+              보았습니다.
+            </p>
+            <p>수업 시간에 진행한 프로젝트는 아래 링크에서 볼 수 있습니다.</p>
             <p>
               <a
                 href="https://github.com/bjh4280/my-app"
@@ -54,7 +65,45 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
+      <section className="section" id="stack" aria-labelledby="stack-title">
+        <div className="wrap">
+          <h2 className="section-title" id="stack-title">
+            사용 기술
+          </h2>
+          <dl className="skills">
+            <div>
+              <dt>프론트엔드</dt>
+              <dd>
+                Next.js 15
+                <br />
+                React 19
+                <br />
+                TypeScript
+                <br />
+                CSS
+              </dd>
+            </div>
+            <div>
+              <dt>백엔드 / 데이터베이스</dt>
+              <dd>
+                Next.js API Routes
+                <br />
+                MongoDB Atlas
+              </dd>
+            </div>
+            <div>
+              <dt>배포 / 도구</dt>
+              <dd>
+                Vercel
+                <br />
+                GitHub
+                <br />
+                VS Code
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
       <section className="section" id="contact" aria-labelledby="contact-title">
         <div className="wrap">
           <h2 className="section-title" id="contact-title">
@@ -63,7 +112,7 @@ export default async function Home() {
           <div className="contact-grid">
             <ContactForm />
             <aside className="contact-aside">
-              <p>프로젝트 제안이나 협업 문의는 폼이나 메일로 보내 주세요.</p>
+              <p>아래 이메일로 연락주세요.</p>
               <a className="contact-email" href={`mailto:${profile.email}`}>
                 {profile.email}
               </a>
