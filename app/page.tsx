@@ -99,7 +99,7 @@ export default async function Home() {
                 <br />
                 GitHub
                 <br />
-                VS Code
+                Resend
               </dd>
             </div>
           </dl>
