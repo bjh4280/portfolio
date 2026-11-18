@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import LogExplorer, { type LogEntry } from "@/components/LogExplorer";
+import { pageMeta } from "@/lib/siteMeta";
 
 // 새로 배운 것이 생기면 해당 프로젝트(project)의 다음 번호로 한 항목씩 추가하세요.
 // project: "portfolio"(개인 포트폴리오) 또는 "class"(수업 프로젝트)
@@ -310,6 +311,11 @@ const logs: LogEntry[] = [
     vuln: false,
   },
 ];
+
+export const metadata = pageMeta(
+  "학습 로그",
+  "수업과 프로젝트에서 배운 웹 보안 내용과 이 사이트의 보안 점검 리포트입니다.",
+);
 
 export default function LogPage() {
   return (

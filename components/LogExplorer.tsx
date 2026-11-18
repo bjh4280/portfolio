@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CodeSnippet from "@/components/CodeSnippet";
+import SecurityReport, { THREATS } from "@/components/SecurityReport";
 
-export type Project = "portfolio" | "class";
+export type Project = "portfolio" | "class" | "report";
 
 export type LogEntry = {
   project: Project;
@@ -63,10 +64,25 @@ function LogItem({ log, index }: { log: LogEntry; index: number }) {
 const PROJECTS: { id: Project; label: string; dir: string }[] = [
   { id: "portfolio", label: "개인 포트폴리오", dir: "~/projects/portfolio" },
   { id: "class", label: "수업 프로젝트", dir: "~/projects/class-practice" },
+  { id: "report", label: "보안 점검 리포트", dir: "~/projects/portfolio" },
 ];
 
 export default function LogExplorer({ logs }: { logs: LogEntry[] }) {
   const [project, setProject] = useState<Project>("portfolio");
+
+  // 홈에서 /log#report 로 들어오면 리포트 탭을 바로 보여줍니다.
+  useEffect(() => {
+    if (window.location.hash === "#report") setProject("report");
+  }, []);
+
+  function pick(id: Project) {
+    setProject(id);
+    try {
+      window.history.replaceState(null, "", id === "report" ? "#report" : "#");
+    } catch {
+      // 주소 갱신에 실패해도 탭 전환은 그대로 동작합니다.
+    }
+  }
 
   const visible = logs
     .filter((l) => l.project === project)
@@ -84,7 +100,7 @@ export default function LogExplorer({ logs }: { logs: LogEntry[] }) {
 
   return (
     <div>
-      <div className="log-tabs" role="tablist" aria-label="프로젝트 선택">
+      <div className="log-tabs" role="tablist" aria-label="보기 선택">
         {PROJECTS.map((p) => (
           <button
             type="button"
@@ -92,35 +108,43 @@ export default function LogExplorer({ logs }: { logs: LogEntry[] }) {
             key={p.id}
             className="log-tab"
             aria-selected={project === p.id}
-            onClick={() => setProject(p.id)}
+            onClick={() => pick(p.id)}
           >
             {p.label}
             <span className="log-chip-n">
-              {logs.filter((l) => l.project === p.id).length}
+              {p.id === "report"
+                ? THREATS.length
+                : logs.filter((l) => l.project === p.id).length}
             </span>
           </button>
         ))}
       </div>
 
-      <dl className="log-stats">
-        {stats.map((st) => (
-          <div className="log-stat" key={st.label}>
-            <dd className="log-stat-num">{st.num}</dd>
-            <dt className="log-stat-label">{st.label}</dt>
-          </div>
-        ))}
-      </dl>
+      {project === "report" ? (
+        <SecurityReport />
+      ) : (
+        <>
+          <dl className="log-stats">
+            {stats.map((st) => (
+              <div className="log-stat" key={st.label}>
+                <dd className="log-stat-num">{st.num}</dd>
+                <dt className="log-stat-label">{st.label}</dt>
+              </div>
+            ))}
+          </dl>
 
-      <p className="log-cmd" aria-live="polite">
-        <span aria-hidden="true">$ </span>
-        cd {current.dir} &amp;&amp; git log
-        <span className="log-cmd-n"> — {visible.length}개</span>
-      </p>
-      <ol className="log-list" key={project}>
-        {visible.map((log, i) => (
-          <LogItem log={log} index={i} key={`${log.project}-${log.no}`} />
-        ))}
-      </ol>
+          <p className="log-cmd" aria-live="polite">
+            <span aria-hidden="true">$ </span>
+            cd {current.dir} &amp;&amp; git log
+            <span className="log-cmd-n"> — {visible.length}개</span>
+          </p>
+          <ol className="log-list" key={project}>
+            {visible.map((log, i) => (
+              <LogItem log={log} index={i} key={`${log.project}-${log.no}`} />
+            ))}
+          </ol>
+        </>
+      )}
     </div>
   );
 }

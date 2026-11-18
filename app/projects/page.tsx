@@ -1,8 +1,8 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import { Globe, GraduationCap } from "lucide-react";
-
-type Lesson = { problem?: string; fix?: string; learned: string };
+import HistoryTimeline from "@/components/HistoryTimeline";
+import { ArrowUpRight, Globe, GraduationCap } from "lucide-react";
+import { pageMeta } from "@/lib/siteMeta";
 
 const projects = [
   {
@@ -12,22 +12,19 @@ const projects = [
     // 스크린샷은 public/projects/ 폴더에 넣고 파일 이름을 여기에 적으면 카드 위에 표시됩니다.
     image: "",
     title: "개인 포트폴리오",
+    links: [
+      { label: "GitHub 저장소", href: "https://github.com/bjh4280/portfolio" },
+    ],
     year: 2026,
     summary: "지금 보고 계신 사이트입니다. 연락 폼의 메시지를 DB에 저장하고 메일로 알려줍니다.",
     stack: ["Next.js 15", "React 19", "TypeScript", "MongoDB Atlas", "Resend", "Vercel"],
-    lesson: {
-      problem:
-        "배포한 사이트에서 '서버에 MongoDB가 연결되어 있지 않습니다' 오류가 났습니다.",
-      fix: "Vercel 환경변수 이름을 코드가 읽는 MONGODB_URI로 맞추고, 값에는 연결 문자열만 넣은 뒤 다시 배포했습니다.",
-      learned:
-        "내 컴퓨터의 .env.local은 배포 환경에 따라가지 않아서, 환경변수는 배포 서비스에도 따로 설정해야 한다는 것을 배웠습니다.",
-    } as Lesson,
     points: [
       "서버에서 이름·이메일·메시지를 검증한 뒤에만 저장",
       "숨김 입력칸(honeypot)으로 자동 스팸 차단",
       "DB 접속 정보와 API 키를 환경변수로 분리해 저장소에 올리지 않음",
       "GitHub 연동으로 push하면 Vercel이 자동 배포",
     ],
+    practice: [] as string[],
   },
   {
     no: "02",
@@ -35,15 +32,23 @@ const projects = [
     Icon: GraduationCap,
     image: "/projects/class-practice.png",
     title: "수업 실습 프로젝트",
+    links: [
+      { label: "배포 사이트 보기", href: "https://my-app-omega-jet-19.vercel.app/" },
+      { label: "GitHub 저장소", href: "https://github.com/bjh4280/my-app" },
+    ],
     year: 2026,
     summary:
       "웹 서버보안프로그래밍 수업에서 공지사항 게시판, 쇼핑몰(장바구니·주문), 회원가입·로그인 등을 간단히 실습했습니다.",
     stack: ["Next.js", "MongoDB", "Auth.js"],
-    lesson: {
-      learned:
-        "비밀번호를 원문 그대로 저장하지 않고 해시로 저장해야 하는 이유와 방법을 익혔습니다.",
-    } as Lesson,
     points: [],
+    practice: [
+      "파일 기반 라우팅과 서버 컴포넌트",
+      "비동기 데이터 로딩 (Suspense, loading)",
+      "Route Handler로 JSON API 만들기",
+      "MongoDB 연동 공지사항 게시판",
+      "회원가입·로그인 (비밀번호 해시 저장)",
+      "장바구니와 주문 내역 (로그인한 사용자만 확인)",
+    ],
   },
 ];
 
@@ -52,41 +57,53 @@ const projects = [
 const history = [
   {
     version: "v1",
-    image: "",
+    image: "/projects/portfolio.png",
     title: "기본 구조 만들기",
     text: "Next.js와 MongoDB로 소개, 사용 기술, 연락하기 구성을 만들고 연락 메시지를 DB에 저장했습니다.",
   },
   {
     version: "v2",
-    image: "/projects/portfolio.png",
-    title: "내 정보 채우고 배포",
-    text: "학교 로고와 소개 문구를 넣고, GitHub와 Vercel로 배포해 주소로 접속할 수 있게 했습니다.",
+    image: "/projects/portfolio-new.png",
+    title: "배포와 디자인 개편",
+    text: "학교 로고와 소개 문구를 넣고 GitHub와 Vercel로 배포했습니다. 메일 알림(Resend)을 붙이고, 색·글꼴·상단 메뉴·애니메이션으로 디자인을 개편했습니다.",
   },
   {
     version: "v3",
-    image: "/projects/history-v3.png",
-    title: "메일 알림 추가",
-    text: "연락 폼으로 메시지가 오면 Resend로 메일 알림이 오도록 했습니다. 키는 환경변수로 분리했습니다.",
-  },
-  {
-    version: "v4",
-    image: "/projects/portfolio-new.png",
-    title: "디자인 개편",
-    text: "색과 글꼴을 바꾸고, 상단 메뉴, 페이지 전환과 스크롤 애니메이션, 아이콘을 넣었습니다.",
-  },
-  {
-    version: "v5",
     image: "/projects/history-v5.png",
     title: "보안 컨셉 정리",
     text: "보안 적용 내용, 프로젝트, 앞으로의 계획 페이지를 추가하고 전체를 보안 컨셉으로 통일했습니다.",
   },
   {
-    version: "v6",
+    version: "v4",
     image: "/projects/history-v6.png",
     title: "다크 모드와 터미널",
     text: "라이트·다크 전환 버튼과, 직접 입력할 수 있는 터미널(help, projects, contact)을 추가하고 섹션 제목을 명령어 말투로 통일했습니다.",
   },
+  {
+    version: "v5",
+    image: "/projects/history-code.png",
+    narrow: true,
+    title: "실제 보안 적용",
+    text: "문의 폼에 요청 횟수 제한(10분에 5번), 같은 사이트에서 온 요청만 허용하는 Origin 확인, 본문 크기 제한을 넣고 보안 응답 헤더와 security.txt를 추가했습니다.",
+  },
+  {
+    version: "v6",
+    image: "/projects/history-log.png",
+    title: "학습 로그와 점검 리포트",
+    text: "수업에서 배운 보안 내용을 코드와 함께 정리한 학습 로그를 만들고, 방어한 것과 아직 부족한 점을 적은 보안 점검 리포트를 추가했습니다.",
+  },
+  {
+    version: "v7",
+    image: "/projects/history-v7.png",
+    title: "소개와 연락하기 다듬기",
+    text: "소개에 강점 카드를 넣고 연락하기를 터미널 말투로 바꿨습니다. 페이지별 제목과 링크 미리보기 이미지도 추가했습니다.",
+  },
 ];
+
+export const metadata = pageMeta(
+  "프로젝트",
+  "개인 포트폴리오와 수업 실습 프로젝트, 그리고 포트폴리오가 바뀐 과정을 보여줍니다.",
+);
 
 export default function ProjectsPage() {
   return (
@@ -130,6 +147,16 @@ export default function ProjectsPage() {
                     <li key={tech}>{tech}</li>
                   ))}
                 </ul>
+                <ul className="project-links">
+                  {project.links.map((link) => (
+                    <li key={link.href}>
+                      <a href={link.href} target="_blank" rel="noopener noreferrer">
+                        {link.label}
+                        <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
                 {project.points.length > 0 && (
                   <ul className="sec-list project-points">
                     {project.points.map((point) => (
@@ -139,25 +166,14 @@ export default function ProjectsPage() {
                     ))}
                   </ul>
                 )}
-                {project.lesson && (
+                {project.practice.length > 0 && (
                   <div className="lesson">
-                    <p className="lesson-title">$ cat lessons.txt</p>
-                    <dl>
-                      {project.lesson.problem && (
-                        <>
-                          <dt>겪은 문제</dt>
-                          <dd>{project.lesson.problem}</dd>
-                        </>
-                      )}
-                      {project.lesson.fix && (
-                        <>
-                          <dt>해결</dt>
-                          <dd>{project.lesson.fix}</dd>
-                        </>
-                      )}
-                      <dt>배운 점</dt>
-                      <dd>{project.lesson.learned}</dd>
-                    </dl>
+                    <p className="lesson-title">$ cat practice.txt</p>
+                    <ul className="sec-list">
+                      {project.practice.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </article>
@@ -169,35 +185,7 @@ export default function ProjectsPage() {
             </span>
             포트폴리오 변천사
           </h2>
-          <div className="timeline">
-            {history.map((item) => (
-              <article className="project timeline-step" key={item.version}>
-                <div className="timeline-node timeline-node-text" aria-hidden="true">
-                  {item.version}
-                </div>
-                <h3 className="project-title">{item.title}</h3>
-                <p className="project-summary history-text">{item.text}</p>
-                {item.image && (
-                  <img
-                    className="project-shot history-shot"
-                    src={item.image}
-                    alt={`${item.version} 화면`}
-                  />
-                )}
-              </article>
-            ))}
-          </div>
-          <div className="sec-panel">
-            <p className="sec-panel-title">수업 실습 기록</p>
-            <ul className="sec-list">
-              <li>파일 기반 라우팅과 서버 컴포넌트</li>
-              <li>비동기 데이터 로딩 (Suspense, loading)</li>
-              <li>Route Handler로 JSON API 만들기</li>
-              <li>MongoDB 연동 공지사항 게시판</li>
-              <li>회원가입·로그인 (비밀번호 해시 저장)</li>
-              <li>장바구니와 주문 내역 (로그인한 사용자만 확인)</li>
-            </ul>
-          </div>
+          <HistoryTimeline items={history} />
           <p>
             <Link href="/">← 메인으로 돌아가기</Link>
           </p>

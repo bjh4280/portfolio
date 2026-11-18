@@ -3,15 +3,15 @@ import { getPortfolio } from "@/lib/data";
 import Link from "next/link";
 import HeroTerminal from "@/components/HeroTerminal";
 import Reveal from "@/components/Reveal";
+import EntryGate from "@/components/EntryGate";
 
 import {
   ArrowUpRight,
   Database,
-  FolderGit2,
-  Globe,
+  Flame,
   Mail,
   Monitor,
-  Lock,
+  Search,
   ShieldCheck,
 } from "lucide-react";
 
@@ -22,6 +22,9 @@ const previews = [
     summary: "연락 폼의 메시지를 DB에 저장하고 메일로 알려줍니다.",
     image: "/projects/portfolio-new.png",
     stack: ["Next.js", "MongoDB", "Resend"],
+    links: [
+      { label: "GitHub 저장소", href: "https://github.com/bjh4280/portfolio" },
+    ],
   },
   {
     path: "~/projects/class-practice",
@@ -29,6 +32,10 @@ const previews = [
     summary: "공지사항 게시판, 쇼핑몰, 회원가입·로그인을 실습했습니다.",
     image: "/projects/class-practice.png",
     stack: ["Next.js", "MongoDB", "Auth.js"],
+    links: [
+      { label: "배포 사이트 보기", href: "https://my-app-omega-jet-19.vercel.app/" },
+      { label: "GitHub 저장소", href: "https://github.com/bjh4280/my-app" },
+    ],
   },
 ];
 
@@ -40,6 +47,7 @@ export default async function Home() {
 
   return (
     <main>
+      <EntryGate />
       <header className="hero hero-grid wrap">
         <div className="hero-main">
           <div className="hero-top">
@@ -89,8 +97,9 @@ export default async function Home() {
           </h2>
           <div className="about-body">
             <p>
-              안녕하세요, 저는 배종현입니다. 중부대학교 정보보호학과 2학년이며,
-              웹 서버보안프로그래밍 수업을 듣고 있습니다.
+              안녕하세요, 수업에서 배운 웹 보안을 이 포트폴리오에 직접 적용해 본
+              배종현입니다. 중부대학교 정보보호학과 2학년이며, 웹
+              서버보안프로그래밍 수업을 듣고 있습니다.
             </p>
             <p>
               이 사이트는 수업 과제로 만든 개인 포트폴리오입니다. Next.js로
@@ -98,38 +107,36 @@ export default async function Home() {
               메시지는 메일로 전달됩니다.
             </p>
             <p>수업 시간에 진행한 프로젝트는 아래에서 볼 수 있습니다.</p>
-            <p>
-              <Link className="icon-link" href="/projects">
-                <FolderGit2 size={18} strokeWidth={1.5} className="icon" aria-hidden="true" />
-                프로젝트 보기
-                <ArrowUpRight size={16} strokeWidth={1.5} className="icon icon-arrow" aria-hidden="true" />
-              </Link>
-            </p>
-            <p>
-              <a
-                className="icon-link"
-                href="https://github.com/bjh4280/my-app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FolderGit2 size={18} strokeWidth={1.5} className="icon" aria-hidden="true" />
-                GitHub 저장소
-                <ArrowUpRight size={16} strokeWidth={1.5} className="icon icon-arrow" aria-hidden="true" />
-              </a>
-            </p>
-            <p>
-              <a
-                className="icon-link"
-                href="https://portfolio-five-lac-76.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Globe size={18} strokeWidth={1.5} className="icon" aria-hidden="true" />
-                배포된 사이트 (Vercel)
-                <ArrowUpRight size={16} strokeWidth={1.5} className="icon icon-arrow" aria-hidden="true" />
-              </a>
-            </p>
           </div>
+          <p className="strengths-label">
+            <span aria-hidden="true">$ </span>cat strengths.txt
+          </p>
+          <ul className="strengths">
+            <li className="strength">
+              <Flame size={22} strokeWidth={1.5} className="icon" aria-hidden="true" />
+              <h3 className="strength-title">포기하지 않는 끈기</h3>
+              <p>
+                배포 오류가 나도 원인을 끝까지 찾아 고쳤고, 이 포트폴리오도 여섯
+                단계로 계속 다듬어 왔습니다.
+              </p>
+            </li>
+            <li className="strength">
+              <ShieldCheck size={22} strokeWidth={1.5} className="icon" aria-hidden="true" />
+              <h3 className="strength-title">서버에서 다시 확인하는 습관</h3>
+              <p>
+                입력값, 권한, 가격처럼 사용자가 보낸 값은 서버에서 다시 확인하도록
+                만들었습니다.
+              </p>
+            </li>
+            <li className="strength">
+              <Search size={22} strokeWidth={1.5} className="icon" aria-hidden="true" />
+              <h3 className="strength-title">스스로 점검하는 태도</h3>
+              <p>
+                방어한 것뿐 아니라 아직 부족한 점도 보안 점검 리포트에 솔직하게
+                기록합니다.
+              </p>
+            </li>
+          </ul>
         </Reveal>
       </section>
       <section className="section" id="projects" aria-labelledby="projects-title">
@@ -161,6 +168,16 @@ export default async function Home() {
                 <ul className="tags">
                   {item.stack.map((tech) => (
                     <li key={tech}>{tech}</li>
+                  ))}
+                </ul>
+                <ul className="project-links">
+                  {item.links.map((link) => (
+                    <li key={link.href}>
+                      <a href={link.href} target="_blank" rel="noopener noreferrer">
+                        {link.label}
+                        <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden="true" />
+                      </a>
+                    </li>
                   ))}
                 </ul>
               </article>
@@ -255,6 +272,11 @@ export default async function Home() {
                 <span className="sec-ok">[OK]</span> 취약점 제보 창구 (security.txt)
               </li>
             </ul>
+            <p className="sec-more">
+              <Link href="/log#report">
+                점검 결과와 남은 한계 보기 <span aria-hidden="true">→</span>
+              </Link>
+            </p>
           </div>
         </Reveal>
       </section>
@@ -268,36 +290,24 @@ export default async function Home() {
           </h2>
           <div className="contact-grid">
             <div>
-              <ContactForm />
-              <p className="form-note">
-                <Lock size={14} strokeWidth={1.5} className="icon" aria-hidden="true" />
-                서버에서 입력값을 검증하고, 스팸은 숨김 필드로 걸러냅니다.
+              <p className="contact-lead">
+                궁금한 점이나 이야기하고 싶은 것이 있으면 편하게 남겨 주세요.
+                확인 후 메일로 답장드리겠습니다.
               </p>
+              <ContactForm />
             </div>
             <aside className="contact-aside">
-              <p>아래 이메일로 연락주세요.</p>
-              <a
-                className="contact-email icon-link"
-                href={`mailto:${profile.email}`}
-              >
-                <Mail size={18} strokeWidth={1.5} className="icon" aria-hidden="true" />
-                {profile.email}
-              </a>
-              <ul>
-                {profile.links.map((link) => (
-                  <li key={link.url}>
-                    <a
-                      className="icon-link"
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                      <ArrowUpRight size={16} strokeWidth={1.5} className="icon icon-arrow" aria-hidden="true" />
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <div className="contact-card">
+                <p className="contact-card-title">$ cat contact.txt</p>
+                <a
+                  className="contact-email icon-link"
+                  href={`mailto:${profile.email}`}
+                >
+                  <Mail size={18} strokeWidth={1.5} className="icon" aria-hidden="true" />
+                  {profile.email}
+                </a>
+                <p>폼 대신 메일로 바로 보내셔도 됩니다.</p>
+              </div>
             </aside>
           </div>
         </Reveal>
@@ -308,7 +318,7 @@ export default async function Home() {
           <div className="footer-links">
             <a href={`mailto:${profile.email}`}>{profile.email}</a>
             <a
-              href="https://github.com/bjh4280/my-app"
+              href="https://github.com/bjh4280/portfolio"
               target="_blank"
               rel="noopener noreferrer"
             >

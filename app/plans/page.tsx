@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import { Cloud, Rocket, ShieldCheck } from "lucide-react";
+import { pageMeta } from "@/lib/siteMeta";
 
 // 내용은 초안입니다. 본인의 실제 계획에 맞게 문장을 고쳐 쓰세요.
 const plans = [
@@ -26,6 +27,11 @@ const plans = [
     items: ["보안을 설계한 프로젝트 완성", "자격증·대회 도전"],
   },
 ];
+
+export const metadata = pageMeta(
+  "앞으로의 계획",
+  "보안을 이해하고 직접 구현하는 웹 개발자가 되기 위한 단계별 계획입니다.",
+);
 
 export default function PlansPage() {
   return (

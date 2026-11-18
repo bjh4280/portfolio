@@ -22,8 +22,9 @@ const siteDescription =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://portfolio-five-lac-76.vercel.app"),
-  title: siteTitle,
+  title: { default: siteTitle, template: "%s — 배종현" },
   description: siteDescription,
+  twitter: { card: "summary_large_image" },
   openGraph: {
     title: siteTitle,
     description: siteDescription,
@@ -36,6 +37,10 @@ export const metadata: Metadata = {
 // 처음 그릴 때 저장된 테마를 먼저 적용해서 화면이 번쩍이지 않게 합니다.
 // 저장된 값이 없으면 라이트로 시작합니다. (다크로 시작하려면 "light"를 "dark"로)
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t="light"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})();`;
+
+// 홈에 처음 들어온 방문자에게만 접속 화면을 보여 주기 위한 표시입니다.
+// 화면이 준비되기 전까지 홈 내용이 번쩍 보이지 않게 가리고, 4초 안에 준비되지 않으면 풉니다.
+const gateScript = `(function(){try{if(location.pathname!=="/")return;if(sessionStorage.getItem("gate-seen"))return;if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;var d=document.documentElement;d.dataset.gate="pending";setTimeout(function(){if(d.dataset.gate==="pending")delete d.dataset.gate},4000)}catch(e){}})();`;
 
 export default function RootLayout({
   children,
@@ -50,6 +55,7 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: gateScript }} />
       </head>
       <body>
         <SiteNav />
