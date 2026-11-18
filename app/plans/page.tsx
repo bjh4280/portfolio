@@ -9,33 +9,21 @@ const plans = [
     Icon: ShieldCheck,
     when: "지금 ~ 2학년",
     title: "웹 보안 기초 다지기",
-    items: [
-      "OWASP Top 10 취약점(인젝션, XSS 등)의 원리와 대응 방법 정리",
-      "수업에서 만든 프로젝트에 입력값 검증과 인증 보완",
-      "Git과 GitHub로 작업 기록을 꾸준히 남기기",
-    ],
+    items: ["OWASP Top 10 정리", "수업 프로젝트에 입력값 검증 보완"],
   },
   {
     no: "02",
     Icon: Cloud,
     when: "3학년",
-    title: "배포와 클라우드 보안 익히기",
-    items: [
-      "클라우드 환경에서 서비스를 배포하고 접근 권한을 관리하는 방법 학습",
-      "로그 확인과 취약점 점검 도구 사용해 보기",
-      "작은 프로젝트를 직접 만들어 운영해 보기",
-    ],
+    title: "배포와 클라우드 보안",
+    items: ["서비스 배포와 권한 관리 익히기", "점검 도구 직접 써 보기"],
   },
   {
     no: "03",
     Icon: Rocket,
     when: "졸업 전",
-    title: "보안을 아는 웹 개발자로 성장",
-    items: [
-      "보안을 고려해 설계한 프로젝트로 포트폴리오 보강",
-      "관련 자격증과 대회 도전",
-      "진로 방향을 정하고 인턴·실무 경험 쌓기",
-    ],
+    title: "보안을 아는 웹 개발자",
+    items: ["보안을 설계한 프로젝트 완성", "자격증·대회 도전"],
   },
 ];
 
@@ -50,9 +38,18 @@ export default function PlansPage() {
             </span>
             roadmap.md
           </h1>
-          <div className="timeline">
+          <div className="goal-block">
+            <p className="goal-label">$ cat goal.txt</p>
+            <p className="goal">
+              보안을 이해하고 직접 구현하는 웹 개발자가 되고 싶습니다.
+            </p>
+            <p className="goal-sub">
+              기능을 만드는 데서 끝내지 않고, 방어까지 설계하는 것이 목표입니다.
+            </p>
+          </div>
+          <div className="timeline plan-timeline">
             {plans.map((plan) => (
-              <article className="project timeline-step" key={plan.no}>
+              <article className="plan-step" key={plan.no}>
                 <div className="timeline-node" aria-hidden="true">
                   <plan.Icon size={20} strokeWidth={1.5} />
                 </div>
@@ -60,11 +57,9 @@ export default function PlansPage() {
                   {plan.no} · {plan.when}
                 </p>
                 <h2 className="project-title">{plan.title}</h2>
-                <ul className="sec-list project-points">
+                <ul className="plan-items">
                   {plan.items.map((item) => (
-                    <li key={item}>
-                      <span className="sec-ok">[ ]</span> {item}
-                    </li>
+                    <li key={item}>{item}</li>
                   ))}
                 </ul>
               </article>

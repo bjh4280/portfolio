@@ -2,17 +2,26 @@ import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import { Globe, GraduationCap } from "lucide-react";
 
+type Lesson = { problem?: string; fix?: string; learned: string };
+
 const projects = [
   {
     no: "01",
     path: "~/projects/portfolio",
     Icon: Globe,
     // 스크린샷은 public/projects/ 폴더에 넣고 파일 이름을 여기에 적으면 카드 위에 표시됩니다.
-    image: "/projects/portfolio.png",
+    image: "",
     title: "개인 포트폴리오",
     year: 2026,
     summary: "지금 보고 계신 사이트입니다. 연락 폼의 메시지를 DB에 저장하고 메일로 알려줍니다.",
     stack: ["Next.js 15", "React 19", "TypeScript", "MongoDB Atlas", "Resend", "Vercel"],
+    lesson: {
+      problem:
+        "배포한 사이트에서 '서버에 MongoDB가 연결되어 있지 않습니다' 오류가 났습니다.",
+      fix: "Vercel 환경변수 이름을 코드가 읽는 MONGODB_URI로 맞추고, 값에는 연결 문자열만 넣은 뒤 다시 배포했습니다.",
+      learned:
+        "내 컴퓨터의 .env.local은 배포 환경에 따라가지 않아서, 환경변수는 배포 서비스에도 따로 설정해야 한다는 것을 배웠습니다.",
+    } as Lesson,
     points: [
       "서버에서 이름·이메일·메시지를 검증한 뒤에만 저장",
       "숨김 입력칸(honeypot)으로 자동 스팸 차단",
@@ -30,6 +39,10 @@ const projects = [
     summary:
       "웹 서버보안프로그래밍 수업에서 공지사항 게시판, 쇼핑몰(장바구니·주문), 회원가입·로그인 등을 간단히 실습했습니다.",
     stack: ["Next.js", "MongoDB", "Auth.js"],
+    lesson: {
+      learned:
+        "비밀번호를 원문 그대로 저장하지 않고 해시로 저장해야 하는 이유와 방법을 익혔습니다.",
+    } as Lesson,
     points: [],
   },
 ];
@@ -57,15 +70,21 @@ const history = [
   },
   {
     version: "v4",
-    image: "",
+    image: "/projects/portfolio-new.png",
     title: "디자인 개편",
     text: "색과 글꼴을 바꾸고, 상단 메뉴, 페이지 전환과 스크롤 애니메이션, 아이콘을 넣었습니다.",
   },
   {
     version: "v5",
-    image: "",
+    image: "/projects/history-v5.png",
     title: "보안 컨셉 정리",
     text: "보안 적용 내용, 프로젝트, 앞으로의 계획 페이지를 추가하고 전체를 보안 컨셉으로 통일했습니다.",
+  },
+  {
+    version: "v6",
+    image: "/projects/history-v6.png",
+    title: "다크 모드와 터미널",
+    text: "라이트·다크 전환 버튼과, 직접 입력할 수 있는 터미널(help, projects, contact)을 추가하고 섹션 제목을 명령어 말투로 통일했습니다.",
   },
 ];
 
@@ -119,6 +138,27 @@ export default function ProjectsPage() {
                       </li>
                     ))}
                   </ul>
+                )}
+                {project.lesson && (
+                  <div className="lesson">
+                    <p className="lesson-title">$ cat lessons.txt</p>
+                    <dl>
+                      {project.lesson.problem && (
+                        <>
+                          <dt>겪은 문제</dt>
+                          <dd>{project.lesson.problem}</dd>
+                        </>
+                      )}
+                      {project.lesson.fix && (
+                        <>
+                          <dt>해결</dt>
+                          <dd>{project.lesson.fix}</dd>
+                        </>
+                      )}
+                      <dt>배운 점</dt>
+                      <dd>{project.lesson.learned}</dd>
+                    </dl>
+                  </div>
                 )}
               </article>
             ))}

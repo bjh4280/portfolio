@@ -1,7 +1,7 @@
 import ContactForm from "@/components/ContactForm";
 import { getPortfolio } from "@/lib/data";
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import HeroTerminal from "@/components/HeroTerminal";
 import Reveal from "@/components/Reveal";
 
 import {
@@ -20,7 +20,7 @@ const previews = [
     path: "~/projects/portfolio",
     title: "개인 포트폴리오",
     summary: "연락 폼의 메시지를 DB에 저장하고 메일로 알려줍니다.",
-    image: "/projects/portfolio.png",
+    image: "",
     stack: ["Next.js", "MongoDB", "Resend"],
   },
   {
@@ -59,51 +59,15 @@ export default async function Home() {
           </p>
           <div className="hero-actions">
             <Link href="/projects" className="btn btn-primary">
-              프로젝트 보기
+              ./projects
             </Link>
             <a href="#contact" className="btn btn-ghost">
-              연락하기
+              ./contact
             </a>
           </div>
         </div>
 
-        <div className="terminal" role="img" aria-label="자기소개를 터미널 명령어 형태로 보여주는 장식 화면">
-          <div className="window-bar" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <code>~/portfolio — zsh</code>
-          </div>
-          <div className="terminal-body" aria-hidden="true">
-            <p className="t-line" style={{ "--i": 0 } as CSSProperties}>
-              <span className="t-prompt">$</span> whoami
-            </p>
-            <p className="t-line t-out" style={{ "--i": 1 } as CSSProperties}>
-              {profile.name}
-            </p>
-            <p className="t-line" style={{ "--i": 2 } as CSSProperties}>
-              <span className="t-prompt">$</span> cat role.txt
-            </p>
-            <p className="t-line t-out" style={{ "--i": 3 } as CSSProperties}>
-              정보보호학과 2학년 · 웹 개발 · 보안
-            </p>
-            <p className="t-line" style={{ "--i": 4 } as CSSProperties}>
-              <span className="t-prompt">$</span> ls stack/
-            </p>
-            <p className="t-line t-out" style={{ "--i": 5 } as CSSProperties}>
-              Next.js  MongoDB  Auth.js
-            </p>
-            <p className="t-line" style={{ "--i": 6 } as CSSProperties}>
-              <span className="t-prompt">$</span> ./status
-            </p>
-            <p className="t-line t-out" style={{ "--i": 7 } as CSSProperties}>
-              <span className="t-ok">[OK]</span> 웹 서버보안프로그래밍 수강 중
-            </p>
-            <p className="t-line" style={{ "--i": 8 } as CSSProperties}>
-              <span className="t-prompt">$</span> <span className="t-cursor" />
-            </p>
-          </div>
-        </div>
+        <HeroTerminal name={profile.name} email={profile.email} />
 
         <div className="hero-meta">
           <span>{profile.location}</span>
@@ -119,7 +83,7 @@ export default async function Home() {
         <Reveal className="wrap">
           <h2 className="section-title" id="about-title">
             <span className="section-no" aria-hidden="true">
-              01 /
+              $ cat about.md
             </span>
             소개
           </h2>
@@ -172,7 +136,7 @@ export default async function Home() {
         <Reveal className="wrap">
           <h2 className="section-title" id="projects-title">
             <span className="section-no" aria-hidden="true">
-              02 /
+              $ ls projects/
             </span>
             프로젝트
           </h2>
@@ -185,11 +149,13 @@ export default async function Home() {
                   <span />
                   <code>{item.path}</code>
                 </div>
-                <img
-                  className="project-shot"
-                  src={item.image}
-                  alt={`${item.title} 화면`}
-                />
+                {item.image && (
+                  <img
+                    className="project-shot"
+                    src={item.image}
+                    alt={`${item.title} 화면`}
+                  />
+                )}
                 <h3 className="project-title">{item.title}</h3>
                 <p className="project-summary">{item.summary}</p>
                 <ul className="tags">
@@ -212,7 +178,7 @@ export default async function Home() {
         <Reveal className="wrap">
           <h2 className="section-title" id="stack-title">
             <span className="section-no" aria-hidden="true">
-              03 /
+              $ ls stack/
             </span>
             사용 기술
           </h2>
@@ -276,6 +242,18 @@ export default async function Home() {
               <li>
                 <span className="sec-ok">[OK]</span> Vercel 배포로 HTTPS 통신
               </li>
+              <li>
+                <span className="sec-ok">[OK]</span> 문의 폼 요청 횟수 제한 (IP당 10분 5회)
+              </li>
+              <li>
+                <span className="sec-ok">[OK]</span> 같은 사이트에서 온 요청만 허용 (Origin 확인)
+              </li>
+              <li>
+                <span className="sec-ok">[OK]</span> 보안 응답 헤더 (클릭재킹·MIME 스니핑 방지)
+              </li>
+              <li>
+                <span className="sec-ok">[OK]</span> 취약점 제보 창구 (security.txt)
+              </li>
             </ul>
           </div>
         </Reveal>
@@ -284,7 +262,7 @@ export default async function Home() {
         <Reveal className="wrap">
           <h2 className="section-title" id="contact-title">
             <span className="section-no" aria-hidden="true">
-              04 /
+              $ ./contact
             </span>
             연락하기
           </h2>
@@ -327,8 +305,21 @@ export default async function Home() {
 
       <footer className="footer">
         <div className="wrap">
+          <div className="footer-links">
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            <a
+              href="https://github.com/bjh4280/my-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </div>
           <p>
             © {new Date().getFullYear()} {profile.name}
+          </p>
+          <p className="footer-exit" aria-hidden="true">
+            $ exit
           </p>
           {process.env.NODE_ENV === "development" && (
             <p className="dev-note">

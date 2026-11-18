@@ -1,11 +1,58 @@
 import { NextResponse } from "next/server";
 import { dbName, getClient, hasMongoConfig } from "@/lib/mongodb";
+import { checkRateLimit, clientIp } from "@/lib/rateLimit";
 
 export const dynamic = "force-dynamic";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const MAX_BODY_BYTES = 10_000;
+const RATE_LIMIT = 5; // IP당 허용 횟수
+const RATE_WINDOW_MS = 10 * 60 * 1000; // 10분
 
 export async function POST(request: Request) {
+  // 1) 같은 사이트에서 보낸 요청만 받습니다. (다른 사이트가 몰래 보내는 요청 차단)
+  const origin = request.headers.get("origin");
+  if (origin) {
+    let sameSite = false;
+    try {
+      sameSite = new URL(origin).host === request.headers.get("host");
+    } catch {
+      sameSite = false;
+    }
+    if (!sameSite) {
+      return NextResponse.json(
+        { error: "허용되지 않은 요청입니다." },
+        { status: 403 },
+      );
+    }
+  }
+
+  // 2) 요청 횟수 제한: 같은 IP에서 10분에 5번까지만 받습니다.
+  const limit = checkRateLimit(
+    `contact:${clientIp(request)}`,
+    RATE_LIMIT,
+    RATE_WINDOW_MS,
+  );
+  if (!limit.allowed) {
+    return NextResponse.json(
+      {
+        error: `문의를 너무 자주 보냈습니다. ${Math.ceil(limit.retryAfterSeconds / 60)}분 뒤에 다시 시도해 주세요.`,
+      },
+      {
+        status: 429,
+        headers: { "Retry-After": String(limit.retryAfterSeconds) },
+      },
+    );
+  }
+
+  // 3) 본문이 너무 크면 읽기 전에 거절합니다.
+  if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+    return NextResponse.json(
+      { error: "요청이 너무 큽니다." },
+      { status: 413 },
+    );
+  }
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();
@@ -93,7 +140,8 @@ async function sendNotification(data: {
         from: "Portfolio <onboarding@resend.dev>",
         to: [to],
         reply_to: data.email,
-        subject: `[포트폴리오] ${data.name}님의 문의`,
+        // 메일 제목에 줄바꿈이 들어가 헤더를 오염시키지 못하게 정리합니다.
+        subject: `[포트폴리오] ${data.name.replace(/[\r\n]+/g, " ")}님의 문의`,
         text: `이름: ${data.name}\n이메일: ${data.email}\n\n${data.message}`,
       }),
     });

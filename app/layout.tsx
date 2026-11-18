@@ -16,10 +16,26 @@ const body = Noto_Sans_KR({
   display: "swap",
 });
 
+const siteTitle = "배종현 포트폴리오 — 정보보호학과 · 웹 개발";
+const siteDescription =
+  "중부대학교 정보보호학과 2학년 배종현의 포트폴리오. 보안을 생각하며 웹을 만들고 배포합니다.";
+
 export const metadata: Metadata = {
-  title: "배종현 포트폴리오",
-  description: "배종현의 포트폴리오",
+  metadataBase: new URL("https://portfolio-five-lac-76.vercel.app"),
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    type: "website",
+    locale: "ko_KR",
+    siteName: "배종현 포트폴리오",
+  },
 };
+
+// 처음 그릴 때 저장된 테마를 먼저 적용해서 화면이 번쩍이지 않게 합니다.
+// 저장된 값이 없으면 라이트로 시작합니다. (다크로 시작하려면 "light"를 "dark"로)
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t="light"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})();`;
 
 export default function RootLayout({
   children,
@@ -27,7 +43,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko" className={`${display.variable} ${body.variable}`}>
+    <html
+      lang="ko"
+      className={`${display.variable} ${body.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <SiteNav />
         {children}
