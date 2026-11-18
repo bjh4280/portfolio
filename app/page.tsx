@@ -20,7 +20,7 @@ const previews = [
     path: "~/projects/portfolio",
     title: "개인 포트폴리오",
     summary: "연락 폼의 메시지를 DB에 저장하고 메일로 알려줍니다.",
-    image: "",
+    image: "/projects/portfolio-new.png",
     stack: ["Next.js", "MongoDB", "Resend"],
   },
   {
