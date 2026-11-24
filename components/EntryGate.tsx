@@ -67,6 +67,9 @@ export default function EntryGate() {
 
     function onKey(event: KeyboardEvent) {
       if (["Tab", "Shift", "Alt", "Control", "Meta"].includes(event.key)) return;
+      // 새로고침(F5, Ctrl+R)이나 개발자도구(F12)처럼 브라우저 단축키는 그대로 동작하게 둡니다.
+      if (event.ctrlKey || event.metaKey || event.altKey) return;
+      if (/^F\d{1,2}$/.test(event.key)) return;
       event.preventDefault();
       enter();
     }

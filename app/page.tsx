@@ -43,7 +43,7 @@ const previews = [
 export const revalidate = 60;
 
 export default async function Home() {
-  const { profile, projects, source } = await getPortfolio();
+  const { profile, source } = await getPortfolio();
 
   return (
     <main>
@@ -61,7 +61,11 @@ export default async function Home() {
             </p>
           </div>
           <h1 className="hero-name">{profile.name}</h1>
-          <p className="hero-role">중부대학교 정보보호학과 2학년 · 웹 개발 · 보안</p>
+          <p className="hero-role">
+            중부대학교 정보보호학과 2학년{" "}
+            <span className="nowrap">· 웹 개발</span>{" "}
+            <span className="nowrap">· 보안</span>
+          </p>
           <p className="hero-tagline">
             보안을 생각하며 웹을 만들고 배포합니다.
           </p>
@@ -81,8 +85,8 @@ export default async function Home() {
           <span>{profile.location}</span>
           <span className="status" data-open={profile.available}>
             {profile.available
-              ? "웹 서버 보안프로그래밍 과제"
-              : "지금은 일정이 가득 찼습니다"}
+              ? "웹 서버 보안프로그래밍 수강 중 · 연락 환영"
+              : "지금은 답장이 늦을 수 있습니다"}
           </span>
         </div>
       </header>
@@ -99,7 +103,7 @@ export default async function Home() {
             <p>
               안녕하세요, 수업에서 배운 웹 보안을 이 포트폴리오에 직접 적용해 본
               배종현입니다. 중부대학교 정보보호학과 2학년이며, 웹
-              서버보안프로그래밍 수업을 듣고 있습니다.
+              서버 보안프로그래밍 수업을 듣고 있습니다.
             </p>
             <p>
               이 사이트는 수업 과제로 만든 개인 포트폴리오입니다. Next.js로
@@ -116,7 +120,7 @@ export default async function Home() {
               <Flame size={22} strokeWidth={1.5} className="icon" aria-hidden="true" />
               <h3 className="strength-title">포기하지 않는 끈기</h3>
               <p>
-                배포 오류가 나도 원인을 끝까지 찾아 고쳤고, 이 포트폴리오도 여섯
+                배포 오류가 나도 원인을 끝까지 찾아 고쳤고, 이 포트폴리오도 일곱
                 단계로 계속 다듬어 왔습니다.
               </p>
             </li>
@@ -235,8 +239,9 @@ export default async function Home() {
               <dd>
                 <ul className="tags">
                   <li>입력값 검증</li>
-                  <li>비밀번호 해시 저장</li>
+                  <li>요청 횟수 제한</li>
                   <li>환경변수 분리</li>
+                  <li>보안 응답 헤더</li>
                 </ul>
               </dd>
             </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
 
 // 메뉴 항목은 여기서 수정하세요. 페이지를 추가하면 한 줄씩 늘리면 됩니다.
@@ -15,6 +16,17 @@ const links = [
 
 export default function SiteNav() {
   const pathname = usePathname();
+  const listRef = useRef<HTMLUListElement>(null);
+
+  // 모바일에서 메뉴가 옆으로 넘칠 때, 지금 보고 있는 페이지 메뉴가 보이도록 가로로만 옮깁니다.
+  useEffect(() => {
+    const list = listRef.current;
+    const current = list?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!list || !current || list.scrollWidth <= list.clientWidth) return;
+    const item = current.parentElement ?? current;
+    list.scrollLeft +=
+      item.getBoundingClientRect().left - list.getBoundingClientRect().left - 8;
+  }, [pathname]);
 
   return (
     <nav className="site-nav" aria-label="주 메뉴">
@@ -23,7 +35,7 @@ export default function SiteNav() {
           배종현
         </Link>
         <div className="site-nav-right">
-          <ul className="site-nav-links">
+          <ul className="site-nav-links" ref={listRef}>
             {links.map(({ href, label }) => {
               const active = href.includes("#")
                 ? false

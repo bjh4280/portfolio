@@ -130,7 +130,7 @@ async function sendNotification(data: {
   if (!apiKey || !to) return; // 설정이 없으면 메일은 건너뜁니다
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -145,6 +145,14 @@ async function sendNotification(data: {
         text: `이름: ${data.name}\n이메일: ${data.email}\n\n${data.message}`,
       }),
     });
+    // fetch는 4xx·5xx 응답에서도 에러를 던지지 않으므로 상태 코드를 직접 확인합니다.
+    // (메시지는 이미 DB에 저장됐으니 방문자에게는 성공으로 응답하고, 서버 로그에만 남깁니다.)
+    if (!response.ok) {
+      console.error(
+        `[contact] 메일 알림 실패: Resend ${response.status}`,
+        await response.text().catch(() => ""),
+      );
+    }
   } catch (error) {
     console.error("[contact] 메일 알림 실패:", error);
   }

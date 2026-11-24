@@ -129,13 +129,13 @@ export default function HeroTerminal({
           <span className="t-prompt">$</span> ls stack/
         </p>
         <p className="t-line t-out" style={line(5)}>
-          Next.js  MongoDB  Auth.js
+          Next.js  MongoDB  Resend
         </p>
         <p className="t-line" style={line(6)}>
           <span className="t-prompt">$</span> ./status
         </p>
         <p className="t-line t-out" style={line(7)}>
-          <span className="t-ok">[OK]</span> 웹 서버보안프로그래밍 수강 중
+          <span className="t-ok">[OK]</span> 웹 서버 보안프로그래밍 수강 중
         </p>
 
         {entries.map((entry) => (

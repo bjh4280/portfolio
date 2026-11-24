@@ -10,7 +10,7 @@ const projects = [
     path: "~/projects/portfolio",
     Icon: Globe,
     // 스크린샷은 public/projects/ 폴더에 넣고 파일 이름을 여기에 적으면 카드 위에 표시됩니다.
-    image: "",
+    image: "/projects/portfolio-new.png",
     title: "개인 포트폴리오",
     links: [
       { label: "GitHub 저장소", href: "https://github.com/bjh4280/portfolio" },
@@ -38,7 +38,7 @@ const projects = [
     ],
     year: 2026,
     summary:
-      "웹 서버보안프로그래밍 수업에서 공지사항 게시판, 쇼핑몰(장바구니·주문), 회원가입·로그인 등을 간단히 실습했습니다.",
+      "웹 서버 보안프로그래밍 수업에서 공지사항 게시판, 쇼핑몰(장바구니·주문), 회원가입·로그인 등을 간단히 실습했습니다.",
     stack: ["Next.js", "MongoDB", "Auth.js"],
     points: [],
     practice: [

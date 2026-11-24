@@ -30,7 +30,7 @@ const logs: LogEntry[] = [
     learned:
       "사용자 입력은 서버에서 다시 검증해야 합니다. 화면에서 막는 것만으로는 우회할 수 있습니다.",
     file: "validate.ts",
-    code: "// 입력값은 서버에서 다시 검증한다\nif (body.website) return ok();   // honeypot\nif (!isEmail(email) || message.length > 1000) {\n  return Response.json({ error: \"invalid\" }, { status: 400 });\n}",
+    code: "// 입력값은 서버에서 다시 검증한다\nif (body.website) return ok();   // honeypot\nif (!isEmail(email) || message.length > 2000) {\n  return Response.json({ error: \"invalid\" }, { status: 400 });\n}",
     vuln: false,
   },
   {

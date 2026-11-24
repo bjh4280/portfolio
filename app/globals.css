@@ -11,6 +11,8 @@
   --highlight: #e8dcbc;
   --danger: #b3261e;
   --brass: #a88a52;
+  /* 밝은 배경 위 글자용 금색 (대비 4.9:1). 선·배경 장식은 --brass를 그대로 씁니다. */
+  --brass-text: #7d6333;
   --burgundy: #8c2b3d;
   --panel: rgba(255, 255, 255, 0.45);
   --field: #ffffff;
@@ -140,6 +142,13 @@ ul {
   font-weight: 600;
   line-height: 1.3;
   letter-spacing: -0.01em;
+  word-break: keep-all;
+  text-wrap: balance;
+}
+
+/* "웹 개발", "· 보안"처럼 한 덩어리로 읽어야 하는 말이 줄 끝에서 끊기지 않게 합니다. */
+.nowrap {
+  white-space: nowrap;
 }
 
 .hero-tagline {
@@ -690,7 +699,7 @@ ul {
 /* 아이콘 */
 .icon {
   flex-shrink: 0;
-  color: var(--brass);
+  color: var(--brass-text);
   transition: color 0.2s ease, transform 0.3s cubic-bezier(0.2, 0.7, 0.1, 1);
 }
 
@@ -731,7 +740,7 @@ ul {
 .hero-prompt {
   font-family: var(--font-mono);
   font-size: 0.9rem;
-  color: var(--brass);
+  color: var(--brass-text);
   letter-spacing: 0.04em;
   margin: 0 0 0.5rem;
 }
@@ -740,7 +749,7 @@ ul {
   font-family: var(--font-mono);
   font-size: 0.55em;
   font-weight: 500;
-  color: var(--brass);
+  color: var(--brass-text);
   margin-right: 0.6rem;
   letter-spacing: 0.04em;
   vertical-align: 0.2em;
@@ -785,7 +794,7 @@ ul {
   gap: 0.5rem;
   margin-top: 1rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: var(--muted);
 }
 
@@ -806,8 +815,8 @@ ul {
 
 .project-meta {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--brass);
+  font-size: 0.84rem; /* 최소 약 12px */
+  color: var(--brass-text);
   letter-spacing: 0.04em;
   margin: 0 0 0.35rem;
 }
@@ -834,7 +843,7 @@ ul {
 
 .tags li {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   padding: 0.15rem 0.6rem;
   border: 1px solid var(--rule);
   color: var(--muted);
@@ -880,7 +889,7 @@ ul {
 .window-bar code {
   margin-left: 0.6rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: #bdb9b0;
 }
 
@@ -891,7 +900,7 @@ ul {
   justify-content: center;
   height: 9rem;
   margin-bottom: 1.25rem;
-  color: var(--brass);
+  color: var(--brass-text);
   background:
     repeating-linear-gradient(
       0deg,
@@ -989,7 +998,7 @@ ul {
 
 .timeline-node-text {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   font-weight: 600;
 }
 
@@ -1174,10 +1183,20 @@ ul {
   margin: 0;
 }
 
-.preview-grid .project-shot {
-  aspect-ratio: 16 / 9;
+/* 프로젝트 썸네일: 캡처가 가로로 아주 넓어서(약 2.2:1) 그대로 줄이면 글씨가 보이지 않습니다.
+   4:3 틀에 꽉 채우면 양옆 빈 공간이 잘리고 가운데 내용이 약 1.6배 크게 보입니다.
+   (변천사 이미지는 화면 전체를 보여 줘야 하므로 여기서 제외) */
+.preview-grid .project-shot,
+.project-list .project-shot {
+  aspect-ratio: 4 / 3;
   object-fit: cover;
-  object-position: top;
+  object-position: 50% 0;
+  background: var(--window-bar);
+}
+
+/* 프로젝트 페이지 카드는 폭이 넓어서 4:3이면 너무 길어집니다. */
+.project-list .project-shot {
+  aspect-ratio: 16 / 9;
 }
 
 .skills dd {
@@ -1208,8 +1227,8 @@ ul {
 .footer-exit {
   margin-top: 0.5rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--brass);
+  font-size: 0.84rem; /* 최소 약 12px */
+  color: var(--brass-text);
 }
 
 /* ---------- 목표, 배운 점 ---------- */
@@ -1221,7 +1240,7 @@ ul {
 .goal-label {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--brass-text);
   margin: 0 0 0.5rem;
 }
 
@@ -1244,8 +1263,8 @@ ul {
 
 .lesson-title {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--brass);
+  font-size: 0.84rem; /* 최소 약 12px */
+  color: var(--brass-text);
   margin: 0 0 0.75rem;
 }
 
@@ -1257,7 +1276,7 @@ ul {
 
 .lesson dt {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   font-weight: 600;
   color: var(--burgundy);
   margin-top: 0.5rem;
@@ -1305,7 +1324,7 @@ ul {
 
 .plan-items li::before {
   content: "— ";
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 /* ---------- 학습 로그 ---------- */
@@ -1351,7 +1370,7 @@ ul {
 }
 
 .log-no {
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .log-tag {
@@ -1361,8 +1380,8 @@ ul {
 .log-state {
   padding: 0 0.5rem;
   border: 1px dashed var(--brass);
-  color: var(--brass);
-  font-size: 0.75rem;
+  color: var(--brass-text);
+  font-size: 0.84rem; /* 최소 약 12px */
 }
 
 .log-title {
@@ -1441,7 +1460,7 @@ ul {
 .snippet-bar code {
   margin-left: 0.5rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: #bdb9b0;
 }
 
@@ -1451,7 +1470,7 @@ ul {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   line-height: 1.7;
 }
 
@@ -1477,7 +1496,7 @@ ul {
 
 .snippet-cap {
   padding: 0.5rem 0.9rem 0.7rem;
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: #8f8c95;
   border-top: 1px solid var(--term-bar);
 }
@@ -1513,7 +1532,7 @@ ul {
 
 .log-stat-label {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: var(--muted);
 }
 
@@ -1565,7 +1584,7 @@ ul {
   background: transparent;
   color: var(--ink);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   cursor: pointer;
 }
 
@@ -1581,14 +1600,14 @@ ul {
 
 .log-chip-n {
   opacity: 0.7;
-  font-size: 0.72rem;
+  font-size: 0.84rem; /* 최소 약 12px */
 }
 
 .log-cmd {
   margin: 0 0 1rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .log-cmd-n {
@@ -1616,7 +1635,7 @@ ul {
 .log-check span {
   margin-right: 0.5rem;
   font-family: var(--font-mono);
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .rep-list {
@@ -1654,7 +1673,7 @@ ul {
   margin: 2rem 0 0.8rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .strengths {
@@ -1709,14 +1728,14 @@ ul {
 .contact-card-title {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .field-key {
   margin-right: 0.35rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .field input,
@@ -1807,7 +1826,7 @@ ul {
   background: var(--paper);
   color: var(--muted);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   cursor: pointer;
 }
 
@@ -1832,7 +1851,7 @@ ul {
   margin: 0 0 0.4rem;
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .hist-nav {
@@ -1923,7 +1942,7 @@ html[data-gate="pending"] body {
   background: transparent;
   color: #a6a39a;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   cursor: pointer;
 }
 
@@ -1960,7 +1979,7 @@ html[data-gate="pending"] body {
 
 .gate-bar code {
   margin-left: 0.6rem;
-  font-size: 0.78rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: #a6a39a;
 }
 
@@ -2000,7 +2019,7 @@ html[data-gate="pending"] body {
   gap: 0.9rem;
   margin: 0;
   padding: 0.4rem 1.3rem 1.3rem;
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: #8a877e;
 }
 
@@ -2041,7 +2060,7 @@ html[data-gate="pending"] body {
   gap: 0.4rem 0.6rem;
   margin: 0 0 0.7rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: var(--muted);
 }
 
@@ -2101,7 +2120,7 @@ html[data-gate="pending"] body {
 
 .rep-tile-tag {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: var(--muted);
 }
 
@@ -2176,8 +2195,8 @@ html[data-gate="pending"] body {
 
 .rep-card-no {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  color: var(--brass);
+  font-size: 0.84rem; /* 최소 약 12px */
+  color: var(--brass-text);
 }
 
 .rep-card-title {
@@ -2188,7 +2207,7 @@ html[data-gate="pending"] body {
   padding: 0.1rem 0.55rem;
   border: 1px solid currentColor;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   white-space: nowrap;
 }
 
@@ -2234,7 +2253,7 @@ html[data-gate="pending"] body {
 
 .rep-rows dt {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: var(--muted);
   padding-top: 0.15rem;
 }
@@ -2291,7 +2310,7 @@ html[data-gate="pending"] body {
   background: none;
   color: var(--accent);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -2301,7 +2320,7 @@ html[data-gate="pending"] body {
   margin-left: auto;
   font-style: normal;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   font-weight: 700;
 }
 
@@ -2335,6 +2354,7 @@ html[data-gate="pending"] body {
   --highlight: #4a3f25;
   --danger: #ff8a80;
   --brass: #c9ab6c;
+  --brass-text: #c9ab6c;
   --burgundy: #d1647a;
   --panel: rgba(255, 255, 255, 0.04);
   --field: #15181d;
@@ -2468,7 +2488,7 @@ html[data-gate="pending"] body {
 .t-hint {
   margin-right: auto;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   color: #8b8893;
 }
 
@@ -2478,7 +2498,7 @@ html[data-gate="pending"] body {
   background: transparent;
   color: #e8e5dc;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.84rem; /* 최소 약 12px */
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
@@ -2511,5 +2531,47 @@ html[data-gate="pending"] body {
   .theme-toggle,
   .t-btn {
     transition: none;
+  }
+}
+
+/* ---------- 모바일 상단 메뉴: 한 줄 ---------- */
+/* 좁은 화면에서는 이름 · 메뉴 · 테마 버튼을 한 줄에 두고, 메뉴는 옆으로 밀어서 봅니다.
+   (위의 .site-nav-inner { flex-wrap: wrap } 보다 뒤에 있어야 적용됩니다) */
+@media (max-width: 40rem) {
+  .site-nav-inner {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    padding-block: 0.55rem;
+  }
+
+  .site-nav-right {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .site-nav-links {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    min-width: 0;
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* 현재 메뉴 밑줄이 잘리지 않도록 위아래 여유 */
+    padding-block: 0.35rem;
+    /* 오른쪽 끝을 흐리게 해서 옆으로 더 있다는 것을 알려 줍니다 */
+    -webkit-mask-image: linear-gradient(to right, #000 82%, transparent);
+    mask-image: linear-gradient(to right, #000 82%, transparent);
+  }
+
+  .site-nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav-links li:last-child {
+    padding-right: 1.5rem;
   }
 }
