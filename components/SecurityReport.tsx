@@ -48,7 +48,7 @@ export const THREATS: Threat[] = [
     threat:
       "너무 길거나 형식이 틀린 값, 아주 큰 요청 본문, 메일 제목에 섞어 넣은 줄바꿈이 올 수 있습니다.",
     defense:
-      "서버에서 이름·이메일·메시지의 길이와 형식을 검증하고, 본문은 10KB로 제한하며, 메일 제목의 줄바꿈은 지웁니다. DB에는 문자열 값만 저장합니다.",
+      "서버에서 이름·이메일·메시지의 길이와 형식을 검증하고, 본문은 헤더 값이 아니라 실제로 읽은 크기가 10KB를 넘으면 거절하며, 메일 제목의 줄바꿈은 지웁니다. DB에는 문자열 값만 저장합니다.",
     limit:
       "이메일은 단순한 형식 검사만 해서 실제로 존재하는 주소인지는 확인하지 않습니다.",
   },
@@ -103,6 +103,51 @@ const NEXT_STEPS = [
   "공유 저장소(Redis 등) 기반 요청 횟수 제한",
   "비밀값을 정해진 주기로 교체",
   "npm audit 같은 의존성 점검을 정기적으로 실행",
+];
+
+// 수업에서 다룬 주제가 이 사이트와 수업 프로젝트에 어떻게 적용됐는지 한눈에 보는 표입니다.
+// 번호는 학습 로그(/log)의 항목 번호입니다. 적용하지 않은 곳은 이유를 적습니다.
+const COVERAGE: { topic: string; site: string; course: string }[] = [
+  {
+    topic: "입력 검증",
+    site: "이름·이메일·메시지 길이와 형식 검증, 본문 10KB 제한 (#02, #09)",
+    course: "쿠키 값도 서버에서 다시 검증 (#05)",
+  },
+  {
+    topic: "XSS",
+    site: "방문자 입력을 HTML로 넣지 않습니다. dangerouslySetInnerHTML은 고정된 테마·입장 스크립트 두 곳뿐입니다.",
+    course: "dangerouslySetInnerHTML을 지우고 자동 이스케이프 사용 (#09)",
+  },
+  {
+    topic: "NoSQL 인젝션",
+    site: "문의 값이 문자열인지 확인한 뒤에만 저장하고, 방문자 입력으로 DB를 조회하지 않습니다.",
+    course: "입력의 타입 확인과 이스케이프 (#11)",
+  },
+  {
+    topic: "인증·인가·IDOR",
+    site: "해당 없음 (로그인 기능이 없습니다)",
+    course: "비밀번호 해시, 세션, role·소유권 검사, 404 처리 (#01~#07, #12)",
+  },
+  {
+    topic: "시크릿 관리",
+    site: ".env로 분리하고 .gitignore로 제외 (#03, #04)",
+    course: "시크릿이 없으면 바로 실패시키기 (#10)",
+  },
+  {
+    topic: "Rate Limiting",
+    site: "문의 폼: 같은 IP는 10분에 5번 (#05)",
+    course: "로그인 시도 횟수 제한 (#13)",
+  },
+  {
+    topic: "보안 헤더",
+    site: "4개 적용, CSP는 아직 없음 (#07)",
+    course: "보안 헤더 추가 (#14)",
+  },
+  {
+    topic: "CSRF",
+    site: "Origin이 같은 사이트일 때만 요청 허용 (#06)",
+    course: "—",
+  },
 ];
 
 export default function SecurityReport() {
@@ -235,6 +280,31 @@ export default function SecurityReport() {
           );
         })}
       </ol>
+
+      <p className="log-cmd">
+        <span aria-hidden="true">$ </span>cat coverage.md
+        <span className="log-cmd-n"> — 수업 주제별 적용 위치</span>
+      </p>
+      <div className="rep-map-wrap">
+        <table className="rep-map">
+          <thead>
+            <tr>
+              <th scope="col">수업 주제</th>
+              <th scope="col">이 포트폴리오</th>
+              <th scope="col">수업 프로젝트</th>
+            </tr>
+          </thead>
+          <tbody>
+            {COVERAGE.map((row) => (
+              <tr key={row.topic}>
+                <th scope="row">{row.topic}</th>
+                <td data-label="이 포트폴리오">{row.site}</td>
+                <td data-label="수업 프로젝트">{row.course}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       <p className="log-cmd">
         <span aria-hidden="true">$ </span>cat TODO.md

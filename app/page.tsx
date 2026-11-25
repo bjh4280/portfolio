@@ -4,6 +4,8 @@ import Link from "next/link";
 import HeroTerminal from "@/components/HeroTerminal";
 import Reveal from "@/components/Reveal";
 import EntryGate from "@/components/EntryGate";
+import TypedCmd from "@/components/TypedCmd";
+import { logs } from "@/lib/logs";
 
 import {
   ArrowUpRight,
@@ -91,12 +93,29 @@ export default async function Home() {
         </div>
       </header>
 
+      <section className="stat-band" aria-label="한눈에 보기">
+        <Reveal className="wrap">
+          <dl className="stat-row">
+            <div className="stat">
+              <dt className="stat-label">학습 로그</dt>
+              <dd className="stat-num">{logs.length}</dd>
+            </div>
+            <div className="stat">
+              <dt className="stat-label">직접 방어한 취약점</dt>
+              <dd className="stat-num">{logs.filter((l) => l.vuln).length}</dd>
+            </div>
+            <div className="stat">
+              <dt className="stat-label">프로젝트</dt>
+              <dd className="stat-num">{previews.length}</dd>
+            </div>
+          </dl>
+        </Reveal>
+      </section>
+
       <section className="section" id="about" aria-labelledby="about-title">
         <Reveal className="wrap">
           <h2 className="section-title" id="about-title">
-            <span className="section-no" aria-hidden="true">
-              $ cat about.md
-            </span>
+            <TypedCmd className="section-no" text="$ cat about.md" />
             소개
           </h2>
           <div className="about-body">
@@ -143,12 +162,10 @@ export default async function Home() {
           </ul>
         </Reveal>
       </section>
-      <section className="section" id="projects" aria-labelledby="projects-title">
+      <section className="section section-alt" id="projects" aria-labelledby="projects-title">
         <Reveal className="wrap">
           <h2 className="section-title" id="projects-title">
-            <span className="section-no" aria-hidden="true">
-              $ ls projects/
-            </span>
+            <TypedCmd className="section-no" text="$ ls projects/" />
             프로젝트
           </h2>
           <div className="preview-grid">
@@ -198,9 +215,7 @@ export default async function Home() {
       <section className="section" id="stack" aria-labelledby="stack-title">
         <Reveal className="wrap">
           <h2 className="section-title" id="stack-title">
-            <span className="section-no" aria-hidden="true">
-              $ ls stack/
-            </span>
+            <TypedCmd className="section-no" text="$ ls stack/" />
             사용 기술
           </h2>
           <dl className="skills">
@@ -285,12 +300,10 @@ export default async function Home() {
           </div>
         </Reveal>
       </section>
-      <section className="section" id="contact" aria-labelledby="contact-title">
+      <section className="section section-alt" id="contact" aria-labelledby="contact-title">
         <Reveal className="wrap">
           <h2 className="section-title" id="contact-title">
-            <span className="section-no" aria-hidden="true">
-              $ ./contact
-            </span>
+            <TypedCmd className="section-no" text="$ ./contact" />
             연락하기
           </h2>
           <div className="contact-grid">

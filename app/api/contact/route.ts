@@ -45,8 +45,17 @@ export async function POST(request: Request) {
     );
   }
 
-  // 3) 본문이 너무 크면 읽기 전에 거절합니다.
+  // 3) 본문 크기 제한: Content-Length 헤더는 거짓이거나 아예 없을 수 있으므로
+  //    (분할 전송 등) 믿지 않고, 실제로 읽은 바이트 수가 한도를 넘으면 읽기를
+  //    멈추고 거절합니다. 헤더 검사는 큰 요청을 일찍 돌려보내는 용도로만 씁니다.
   if (Number(request.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) {
+    return NextResponse.json(
+      { error: "요청이 너무 큽니다." },
+      { status: 413 },
+    );
+  }
+  const raw = await readBodyLimited(request, MAX_BODY_BYTES);
+  if (raw === null) {
     return NextResponse.json(
       { error: "요청이 너무 큽니다." },
       { status: 413 },
@@ -55,7 +64,11 @@ export async function POST(request: Request) {
 
   let body: Record<string, unknown>;
   try {
-    body = await request.json();
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      throw new Error("not an object");
+    }
+    body = parsed as Record<string, unknown>;
   } catch {
     return NextResponse.json(
       { error: "요청 형식이 올바르지 않습니다." },
@@ -118,6 +131,35 @@ export async function POST(request: Request) {
       { status: 500 },
     );
   }
+}
+
+// 본문을 조금씩 읽으면서 바이트 수를 세다가 한도를 넘으면 중단합니다.
+// 한도 이내면 문자열을, 넘으면 null을 돌려줍니다.
+async function readBodyLimited(
+  request: Request,
+  maxBytes: number,
+): Promise<string | null> {
+  if (!request.body) return "";
+  const reader = request.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel().catch(() => {});
+      return null;
+    }
+    chunks.push(value);
+  }
+  const all = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    all.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return new TextDecoder().decode(all);
 }
 
 async function sendNotification(data: {

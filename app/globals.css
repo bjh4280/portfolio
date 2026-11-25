@@ -2053,6 +2053,612 @@ html[data-gate="pending"] body {
   }
 }
 
+/* ---------- 홈: 숫자 띠, 구역 배경, 명령어 입력 효과 ---------- */
+
+.stat-band {
+  border-top: 1px solid var(--rule);
+  background: var(--panel);
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 0.2rem;
+  padding: clamp(1.1rem, 3vw, 1.75rem) clamp(0.75rem, 3vw, 1.75rem);
+}
+
+.stat + .stat {
+  border-left: 1px solid var(--rule);
+}
+
+.stat-num {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.section-alt {
+  background: var(--panel);
+}
+
+.typed-rest {
+  visibility: hidden;
+}
+
+.typed-caret {
+  display: inline-block;
+  width: 0.55ch;
+  height: 1em;
+  margin-left: 1px;
+  background: var(--brass-text);
+  vertical-align: text-bottom;
+  animation: typed-blink 1s steps(1) infinite;
+}
+
+@keyframes typed-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typed-caret {
+    animation: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .stat {
+    padding-inline: 0.6rem;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+  }
+}
+
+/* ---------- 앞으로의 계획: git 그래프 ---------- */
+
+.g-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1.2rem;
+  margin: 0 0 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+
+.g-key {
+  display: inline-block;
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-right: 0.15rem;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+  box-sizing: border-box;
+}
+
+.g-key-done {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+
+.g-key-now {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.g-graph {
+  --g-line: #b9b5aa;
+  --dot-c: 1.6rem;
+  --lane-1: 0.7rem;
+  --lane-2: 2.1rem;
+  list-style: none;
+  margin: 0 0 2rem;
+  padding: 0;
+}
+
+:root[data-theme="dark"] .g-graph {
+  --g-line: #3d4049;
+}
+
+.g-row {
+  display: grid;
+  grid-template-columns: 2.8rem minmax(0, 1fr);
+}
+
+.g-rail {
+  position: relative;
+}
+
+.g-rail > span {
+  position: absolute;
+}
+
+.g-line-main {
+  left: var(--lane-1);
+  width: 2px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+  background: var(--g-line);
+}
+
+.g-first .g-line-main {
+  top: var(--dot-c);
+}
+
+.g-last .g-line-main {
+  bottom: auto;
+  height: var(--dot-c);
+}
+
+.g-line-branch {
+  left: var(--lane-2);
+  width: 2px;
+  margin-left: -1px;
+  top: 0;
+  bottom: 0;
+  background: var(--g-line);
+}
+
+.g-fork .g-line-branch {
+  top: var(--dot-c);
+}
+
+.g-join .g-line-branch {
+  bottom: auto;
+  height: var(--dot-c);
+}
+
+.g-fork.g-join .g-line-branch {
+  display: none;
+}
+
+.g-curve-fork {
+  left: var(--lane-1);
+  width: calc(var(--lane-2) - var(--lane-1));
+  margin-left: -1px;
+  top: 0;
+  height: var(--dot-c);
+  border-left: 2px solid var(--g-line);
+  border-bottom: 2px solid var(--g-line);
+  border-bottom-left-radius: 0.9rem;
+}
+
+.g-curve-join {
+  left: var(--lane-1);
+  width: calc(var(--lane-2) - var(--lane-1));
+  margin-left: -1px;
+  top: var(--dot-c);
+  bottom: 0;
+  border-right: 2px solid var(--g-line);
+  border-bottom: 2px solid var(--g-line);
+  border-bottom-right-radius: 0.9rem;
+}
+
+.g-dot {
+  left: calc(var(--lane-1) - 0.4rem);
+  top: calc(var(--dot-c) - 0.4rem);
+  z-index: 1;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 2px solid var(--muted);
+  background: var(--paper);
+  box-sizing: border-box;
+}
+
+.g-branch .g-dot {
+  left: calc(var(--lane-2) - 0.4rem);
+}
+
+.g-state-done .g-dot {
+  background: var(--brass);
+  border-color: var(--brass);
+}
+
+.g-state-now .g-dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  animation: g-pulse 2s ease-out infinite;
+}
+
+@keyframes g-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--ring);
+  }
+  100% {
+    box-shadow: 0 0 0 0.6rem transparent;
+  }
+}
+
+.g-body {
+  min-width: 0;
+  padding: 0.55rem 0 0.55rem 0.25rem;
+}
+
+.g-chip {
+  display: inline-block;
+  margin-left: 0.6rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--brass);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--brass-text);
+  white-space: nowrap;
+}
+
+.g-item summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.3rem 0;
+  list-style: none;
+  cursor: pointer;
+  line-height: 1.6;
+}
+
+.g-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.g-item summary::after {
+  content: "+";
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.g-item[open] summary::after {
+  content: "−";
+}
+
+.g-item summary:hover .g-title {
+  color: var(--accent);
+}
+
+.g-item summary:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+.g-mark {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.g-state-now .g-mark {
+  color: var(--accent);
+}
+
+.g-title {
+  font-size: 0.975rem;
+  font-weight: 600;
+}
+
+.g-state-todo .g-title {
+  font-weight: 500;
+}
+
+.g-when {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.g-detail {
+  margin: 0.2rem 0 0.4rem;
+  padding: 0.1rem 0 0.1rem 0.9rem;
+  border-left: 3px solid var(--brass);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.g-detail > div {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  gap: 0.4rem;
+  margin: 0.2rem 0;
+}
+
+.g-detail dt {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--brass-text);
+}
+
+.g-detail dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* 현재 위치 요약 */
+.g-stat-text {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+/* 위치에서 멀수록 점과 선이 연해지고 제목은 회색 쪽으로 옮겨 갑니다.
+   글씨는 회색(--muted)보다 연해지지 않아 읽기 대비는 유지됩니다. */
+.g-row {
+  --fade: var(--fade-base, 1);
+}
+
+.g-rail {
+  opacity: var(--fade);
+  transition: opacity 0.25s ease;
+}
+
+.g-state-todo:hover,
+.g-state-todo:focus-within,
+.g-state-todo:has(.g-item[open]) {
+  --fade: 1;
+}
+
+.g-state-todo .g-title {
+  color: var(--ink);
+  color: color-mix(in srgb, var(--ink) calc(var(--fade) * 100%), var(--muted));
+  transition: color 0.25s ease;
+}
+
+.g-chip-head {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 마지막 목표: 크고 또렷하게 */
+.g-goal {
+  --dot-c: 2.1rem;
+}
+
+.g-goal .g-dot {
+  left: calc(var(--lane-1) - 0.55rem);
+  top: calc(var(--dot-c) - 0.55rem);
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 3px solid var(--accent);
+  background: var(--paper);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.g-goal .g-body {
+  padding-top: 0.75rem;
+  padding-bottom: 0.9rem;
+}
+
+.g-state-todo.g-goal .g-title {
+  color: var(--accent);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.g-goal .g-when {
+  color: var(--accent);
+}
+
+/* 그래프가 화면에 들어오면 줄이 한 줄씩 나타납니다. (components/GraphReveal.tsx)
+   g-anim은 자바스크립트가 켠 경우에만 붙으므로, 꺼져 있으면 완성된 모양 그대로 보입니다.
+   애니메이션이 아니라 transition만 써서 HEAD 점의 깜빡임과 겹치지 않습니다. */
+.g-anim .g-row {
+  opacity: 0;
+}
+
+.g-anim .g-row.is-in {
+  opacity: 1;
+  transition: opacity 0.35s ease var(--d, 0ms);
+}
+
+.g-anim .g-body {
+  transform: translateX(-0.75rem);
+}
+
+.g-anim .g-row.is-in .g-body {
+  transform: none;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.1, 1) var(--d, 0ms);
+}
+
+.g-anim .g-dot {
+  scale: 0.2;
+}
+
+.g-anim .g-row.is-in .g-dot {
+  scale: 1;
+  transition: scale 0.4s cubic-bezier(0.3, 1.6, 0.5, 1) var(--d, 0ms);
+}
+
+.g-anim .g-line-main,
+.g-anim .g-line-branch {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.g-anim .g-row.is-in .g-line-main,
+.g-anim .g-row.is-in .g-line-branch {
+  transform: scaleY(1);
+  transition: transform 0.45s ease-out var(--d, 0ms);
+}
+
+.g-anim .g-curve-fork,
+.g-anim .g-curve-join {
+  opacity: 0;
+}
+
+.g-anim .g-row.is-in .g-curve-fork,
+.g-anim .g-row.is-in .g-curve-join {
+  opacity: 1;
+  transition: opacity 0.4s ease calc(var(--d, 0ms) + 150ms);
+}
+
+/* 인쇄할 때는 스크롤이 없으므로 모든 줄을 처음부터 보여 줍니다 */
+@media print {
+  .g-anim .g-row,
+  .g-anim .g-curve-fork,
+  .g-anim .g-curve-join {
+    opacity: 1;
+  }
+
+  .g-anim .g-body,
+  .g-anim .g-line-main,
+  .g-anim .g-line-branch {
+    transform: none;
+  }
+
+  .g-anim .g-dot {
+    scale: 1;
+  }
+}
+
+/* 군 복무 갈래: 국방색 포인트 */
+.g-graph {
+  --army: #5c6b3b;
+  --army-text: #4a5730;
+}
+
+:root[data-theme="dark"] .g-graph {
+  --army: #8c9b62;
+  --army-text: #a9b87a;
+}
+
+.g-tone-army .g-line-branch,
+.g-tone-army .g-curve-fork,
+.g-tone-army .g-curve-join {
+  --g-line: var(--army);
+}
+
+.g-tone-army .g-dot {
+  background: var(--army);
+  border-color: var(--army);
+}
+
+.g-tone-army .g-chip {
+  border-color: var(--army);
+  color: var(--army-text);
+}
+
+/* 설명이 없는 항목은 눌러도 열리지 않으므로 + 표시와 손 모양을 없앱니다 */
+.g-item-plain summary {
+  cursor: default;
+}
+
+.g-item-plain summary::after {
+  content: "";
+}
+
+.g-item-plain summary:hover .g-title {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .g-state-now .g-dot {
+    animation: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .g-item summary {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .g-when {
+    display: none;
+  }
+}
+
+.rep-map-wrap {
+  margin: 0 0 2rem;
+  overflow-x: auto;
+}
+
+.rep-map {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.rep-map th,
+.rep-map td {
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.rep-map thead th {
+  color: var(--brass-text);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rep-map tbody th {
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rep-map td {
+  color: var(--muted);
+}
+
+@media (max-width: 40rem) {
+  .rep-map thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .rep-map,
+  .rep-map tbody,
+  .rep-map tr,
+  .rep-map th,
+  .rep-map td {
+    display: block;
+  }
+
+  .rep-map tr {
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .rep-map th,
+  .rep-map td {
+    padding: 0.15rem 0;
+    border-bottom: 0;
+  }
+
+  .rep-map td::before {
+    content: attr(data-label) " · ";
+    color: var(--brass-text);
+    font-size: 0.8125rem;
+  }
+}
+
 .rep-legend {
   display: flex;
   align-items: center;
@@ -2390,7 +2996,7 @@ html[data-gate="pending"] body {
 
 .theme-toggle:hover {
   border-color: var(--brass);
-  color: var(--brass);
+  color: var(--brass-text);
 }
 
 .site-nav-inner {
